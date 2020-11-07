@@ -3,7 +3,7 @@ import classes from './Layout.module.css';
 import Toolbar from "../../components/Navigation/Toolbar/Toolbar";
 import SideDrawer from "../../components/Navigation/SideDrawer/SideDrawer";
 
-class layout extends Component {
+class Layout extends Component {
   state = {
     showSideDrawer: false
   }
@@ -33,4 +33,4 @@ class layout extends Component {
   }
 }
 
-export default layout;
+export default Layout;
