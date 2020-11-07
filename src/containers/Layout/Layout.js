@@ -9,13 +9,13 @@ class layout extends Component {
   }
 
   sideDrawerClosedHandler = () => {
-    this.setState({showSideDrawer: false})
+    this.setState({showSideDrawer: false});
   }
 
   sideDrawerOpenedHandler = () => {
     this.setState((prevState) => {
       return {showSideDrawer: !prevState.showSideDrawer}
-    })
+    });
   }
 
   render() {
