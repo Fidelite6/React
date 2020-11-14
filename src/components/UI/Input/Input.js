@@ -11,7 +11,6 @@ const input = (props) => {
     errorMessage = <p className={classes.ValidationError}>{props.validationError}</p>
   }
 
-
   switch (props.elementType) {
     case('input'):
       inputElement = <input
