@@ -8,6 +8,22 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.FETCH_ORDER_START:
+      return {
+        ...state,
+        loading: true
+      };
+    case actionTypes.FETCH_ORDER_SUCCESS:
+      return {
+        ...state,
+        orders: action.payload.orders,
+        loading: false,
+      };
+    case actionTypes.FETCH_ORDER_FAILED:
+      return {
+        ...state,
+        loading: false,
+      };
     case actionTypes.PURCHASE_INIT:
       return {
         ...state,
@@ -22,7 +38,7 @@ const reducer = (state = initialState, action) => {
       const newOrder = {
         ...action.payload.orderData,
         id: action.payload.id,
-      }
+      };
       return {
         ...state,
         loading: false,
