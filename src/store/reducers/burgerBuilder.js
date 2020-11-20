@@ -15,34 +15,46 @@ const INGREDIENT_PRICES = {
   bacon: 0.9
 };
 
+const addIngredient = (state, action) => {
+  return updateObject(state, {
+    ingredients: {
+      ...state.ingredients,
+      [action.payload.ingredientName]: state.ingredients[action.payload.ingredientName] + 1,
+    },
+    totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload.ingredientName]
+  });
+};
+
+const removeIngredient = (state, action) => {
+  return updateObject(state, {
+    ingredients: {
+      ...state.ingredients,
+      [action.payload.ingredientName]: state.ingredients[action.payload.ingredientName] - 1,
+    },
+    totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload.ingredientName]
+  });
+};
+
+const setIngredient = (state, action) => {
+  return updateObject(state, {
+    ingredients: action.payload.ingredients,
+    error: false,
+    totalPrice: INITIAL_PRICE,
+  });
+};
+
+const fetchIngredient = (state, action) => {
+  return updateObject(state, {error: true});
+
+}
+
 const burgerBuilder = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.ADD_INGREDIENT:
-      return updateObject(state, {
-        ingredients: {
-          ...state.ingredients,
-          [action.payload.ingredientName]: state.ingredients[action.payload.ingredientName] + 1,
-        },
-        totalPrice: state.totalPrice + INGREDIENT_PRICES[action.payload.ingredientName]
-      });
-    case actionTypes.REMOVE_INGREDIENT:
-      return updateObject(state, {
-        ingredients: {
-          ...state.ingredients,
-          [action.payload.ingredientName]: state.ingredients[action.payload.ingredientName] - 1,
-        },
-        totalPrice: state.totalPrice - INGREDIENT_PRICES[action.payload.ingredientName]
-      });
-    case actionTypes.SET_INGREDIENT:
-      return updateObject(state, {
-        ingredients: action.payload.ingredients,
-        error: false,
-        totalPrice: INITIAL_PRICE,
-      });
-    case actionTypes.FETCH_INGREDIENT_FAILED:
-      return updateObject(state, {error: true});
-    default:
-      return state;
+    case actionTypes.ADD_INGREDIENT: return addIngredient(state, action);
+    case actionTypes.REMOVE_INGREDIENT: return removeIngredient(state, action);
+    case actionTypes.SET_INGREDIENT: return setIngredient(state, action);
+    case actionTypes.FETCH_INGREDIENT_FAILED: return fetchIngredient(state, action);
+    default: return state;
   }
 };
 
