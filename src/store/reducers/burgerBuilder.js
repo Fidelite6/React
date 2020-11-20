@@ -1,9 +1,10 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from "../utility";
 
+const INITIAL_PRICE = 4;
 const initialState = {
   ingredients: null,
-  totalPrice: 4,
+  totalPrice: INITIAL_PRICE,
   error: false,
 };
 
@@ -35,7 +36,8 @@ const burgerBuilder = (state = initialState, action) => {
     case actionTypes.SET_INGREDIENT:
       return updateObject(state, {
         ingredients: action.payload.ingredients,
-        error: false
+        error: false,
+        totalPrice: INITIAL_PRICE,
       });
     case actionTypes.FETCH_INGREDIENT_FAILED:
       return updateObject(state, {error: true});
