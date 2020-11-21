@@ -8,48 +8,34 @@ import Input from "../../components/UI/Input/Input";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
+import {
+  createFormFieldObject,
+  getInputElementConfig,
+  inputChangedHandler
+} from "../../helpers/formHelper";
 
 class ContactData extends Component {
-  getInputElementConfig = (inputType, placeholder) => {
-    return {
-      type: inputType,
-      placeholder: placeholder,
-    };
-  }
-
-  createFormFieldObject = (elementType, elementConfig, value, validation = undefined, validationError = '',) => {
-    return {
-      elementType,
-      elementConfig,
-      validation,
-      validationError,
-      value,
-      valid: !validation,
-      touched: false,
-    };
-  }
-
   state = {
     orderForm: {
-      name: this.createFormFieldObject(
+      name: createFormFieldObject(
         'input',
-        this.getInputElementConfig('text', 'Your Name'),
+        getInputElementConfig('text', 'Your Name'),
         '',
         {
           required: true
         },
         'Please, enter your name',
       ),
-      street: this.createFormFieldObject(
-        'input', this.getInputElementConfig('text', 'Street'),
+      street: createFormFieldObject(
+        'input', getInputElementConfig('text', 'Street'),
         '',
         {
           required: true
         },
         'Please, enter your street',
       ),
-      zipCode: this.createFormFieldObject(
-        'input', this.getInputElementConfig('text', 'ZIP'),
+      zipCode: createFormFieldObject(
+        'input', getInputElementConfig('text', 'ZIP'),
         '',
         {
           required: true,
@@ -58,23 +44,23 @@ class ContactData extends Component {
         },
         'Please, enter ZIP code',
       ),
-      country: this.createFormFieldObject(
-        'input', this.getInputElementConfig('text', 'Country'),
+      country: createFormFieldObject(
+        'input', getInputElementConfig('text', 'Country'),
         '',
         {
           required: true
         },
         'Please, enter your country',
       ),
-      email: this.createFormFieldObject(
-        'input', this.getInputElementConfig('email', 'Your E-Mail'),
+      email: createFormFieldObject(
+        'input', getInputElementConfig('email', 'Your E-Mail'),
         '',
         {
           required: true
         },
         'Please, provide correct email',
       ),
-      deliveryMethod: this.createFormFieldObject(
+      deliveryMethod: createFormFieldObject(
         'select', {
           options: [
             {value: 'fastest', displayValue: 'Fastest'},
@@ -87,31 +73,8 @@ class ContactData extends Component {
     formIsValid: false,
   }
 
-  checkValidity(value, rules) {
-    let isValid = true;
-
-    if (!rules) {
-      return true;
-    }
-
-    if (rules.required) {
-      isValid = value.trim() !== '' && isValid;
-    }
-
-    if (rules.minLength) {
-      isValid = value.length >= rules.minLength && isValid;
-    }
-
-    if (rules.maxLength) {
-      isValid = value.length <= rules.maxLength && isValid;
-    }
-
-    return isValid;
-  }
-
   orderHandler = (e) => {
     e.preventDefault();
-    // this.setState({loading: true});
 
     const formData = {};
 
@@ -128,25 +91,9 @@ class ContactData extends Component {
     this.props.onOrderBurger(order);
   }
 
-  inputChangedHandler = (event, inputIdentifier) => {
-    const updatedOrderForm = {
-      ...this.state.orderForm
-    };
-    const updatedFormElement = {
-      ...updatedOrderForm[inputIdentifier]
-    };
-
-    updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-    updatedFormElement.touched = true;
-    updatedOrderForm[inputIdentifier] = updatedFormElement;
-
-    let formIsValid = true;
-    for (let inputIdentifier in updatedOrderForm) {
-      formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
-    }
-
-    this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
+  inputChangedOrderFormHandler(event, elementId) {
+    const changedData = inputChangedHandler(this.state.orderForm, event, elementId)
+    this.setState({orderForm: changedData.updatedForm, formIsValid: changedData.formIsValid});
   }
 
   render() {
@@ -166,7 +113,7 @@ class ContactData extends Component {
             key={formElement.id}
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
-            changed={(event) => this.inputChangedHandler(event, formElement.id)}
+            changed={(event) => this.inputChangedOrderFormHandler(event, formElement.id)}
             value={formElement.config.value}
             invalid={!formElement.config.valid}
             validationError={formElement.config.validationError}
