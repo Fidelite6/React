@@ -7,6 +7,10 @@ import * as actions from "../../store/actions";
 import { connect } from "react-redux";
 
 class Orders extends Component {
+  componentDidMount() {
+    this.props.getOrders(this.props.token);
+  }
+
   render() {
     let orders = <Spinner/>;
 
@@ -29,10 +33,11 @@ class Orders extends Component {
 const mapStateToProps = state => ({
   orders: state.order.orders,
   loading: state.order.loading,
+  token: state.auth.token
 });
 
 const mapDispatchToProps = dispatch => ({
-  getOrders: dispatch(actions.fetchOrders())
+  getOrders: (token) => dispatch(actions.fetchOrders(token))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(Orders, axios));
