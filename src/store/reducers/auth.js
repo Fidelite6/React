@@ -20,7 +20,6 @@ const authSuccess = (state, action) => {
     error: null,
     loading: false,
   });
-
 };
 
 const authFail = (state, action) => {
