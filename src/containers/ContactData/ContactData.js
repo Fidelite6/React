@@ -12,7 +12,7 @@ import {
   createFormFieldObject,
   getInputElementConfig,
   inputChangedHandler
-} from "../../helpers/formHelper";
+} from "../../shared/formHelper";
 
 class ContactData extends Component {
   state = {

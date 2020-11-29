@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { createFormFieldObject, getInputElementConfig, inputChangedHandler } from '../../helpers/formHelper';
+import { createFormFieldObject, getInputElementConfig, inputChangedHandler } from '../../shared/formHelper';
 import Input from '../../components/UI/Input/Input';
 import Button from '../../components/UI/Button/Button';
 import classes from './Auth.module.css';
